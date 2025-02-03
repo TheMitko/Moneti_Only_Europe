@@ -1293,7 +1293,10 @@ function updatePointDisplay(pointId) {
           circle.setAttribute("fill", players[2].color);
         } else if (ownership === 3){
           circle.setAttribute("fill", players[3].color);
+        }else if (ownership === 4){
+          circle.setAttribute("fill", players[4].color);
         }
+
       } else {
         circle.setAttribute("fill", "gray");
       }
