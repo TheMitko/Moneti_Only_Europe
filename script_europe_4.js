@@ -67,6 +67,7 @@ function highlightConnections(pointId) {
       const circle = document.getElementById(connectionId);
       if (circle) {
         circle.setAttribute("fill", "yellow");
+        console.log(`Point ${connectionId} colored yellow`);
         yellowPoints.push(connectionId);
         circle.setAttribute("r", connectedPoint.capital ? 22 : 10);
       }
@@ -127,6 +128,7 @@ function changeCountryOwnership(country, newOwner) {
       const circle = document.getElementById(point.id);
       if (circle) {
         circle.setAttribute("fill", newOwner === 1 ? players[1].color : (newOwner === 2 ? players[2].color : (newOwner === 3 ? players[3].color : players[4].color)));
+        console.log(`Point ${point.id} colored ${circle.getAttribute("fill")}`);
       }
       point.OriginalOwner = newOwner; // Update the original owner for future reference
       players[newOwner].countries.push(country);
@@ -189,7 +191,7 @@ function getCurrentPlayerName() {
 makeConnectionsBidirectional(pointsData);
 
 // Инициализиране на предупреждение за уведомяване на играчите за старта на разпределянето на пуловете
-alert("Започва разполагането на пулове за двама играчи!");
+alert("Започва разполагането на пулове за четирима играчи!");
 
 // Създаване на карта за следене на пуловете на всяка точка
 const pawnsOnPoints = {};
@@ -198,13 +200,13 @@ const pointNames = {}; // Създаване на обект за имена н�
 function checkCountryOwnership(point) {
   const country = point.country;
   if (country) {
-    if (players[1].countries.includes(country)) {
+    if (players[1].countries.includes(country)&& playerPawnsCount[1]>0) {
       return 1; // Player 1 owns this country
-    } else if (players[2].countries.includes(country)) {
+    } else if (players[2].countries.includes(country)&& playerPawnsCount[2]>0) {
       return 2; // Player 2 owns this country
-    } else if (players[3].countries.includes(country)) {
+    } else if (players[3].countries.includes(country)&& playerPawnsCount[3]>0) {
       return 3; // Player 3 owns this country
-    } else if (players[4].countries.includes(country)) {
+    } else if (players[4].countries.includes(country)&& playerPawnsCount[4]>0) {
       return 4; // Player 4 owns this country
     }
   }
@@ -666,6 +668,7 @@ function selectPoint(pointId) {
         }
         else { circle.setAttribute("r", point.capital ? 22 : 7); }
         circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : (checkCountryOwnership(point) === 3 ? players[3].color : players[4].color))) : "gray");
+        console.log(`Point ${point.id} colored ${circle.getAttribute("fill")}`);
         console.log(checkCountryOwnership(point));
       }
     });
@@ -1124,6 +1127,7 @@ function handleCaptureChoice(pointId) {
     if (circle && point) {
       circle.setAttribute("r", 7); // Връщане към нормален радиус
       circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : (checkCountryOwnership(point) === 3 ? players[3].color : players[4].color))) : "gray");
+      console.log(`Point ${point.id} colored ${circle.getAttribute("fill")}`);
       console.log(checkCountryOwnership(point));
     }
   });
@@ -1199,6 +1203,7 @@ function highlightCaptureOption(pointId) {
   if (point) {
     const circle = document.getElementById(point.id);
     circle.setAttribute("fill", "yellow");
+    console.log(`Point ${point.id} colored yellow`);
     circle.setAttribute("r", point.capital ? 22 : 10); // Увеличаване на радиуса на точката
   }
 }
@@ -1249,6 +1254,7 @@ function updatePointDisplay(pointId) {
       fontWeight = "normal"; // Default font weight
     }
     circle.setAttribute("fill", fillColor);
+    console.log(`Point ${point.id} colored ${circle.getAttribute("fill")}`);
     circle.style.cursor = "pointer"; // Настройка на курсора на pointer
 
     group.appendChild(circle);
@@ -1279,7 +1285,18 @@ function updatePointDisplay(pointId) {
     const circle = document.getElementById(point.id);
     if (circle) {
       circle.setAttribute("r", point.capital ? 22 : 7); // Начален радиус
-      circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : (checkCountryOwnership(point) === 3 ? players[3].color : players[4].color))) : "gray"); console.log(checkCountryOwnership(point)); // Установяване на цвета на кръга
+      if (point.country) {
+        const ownership = checkCountryOwnership(point);
+        if (ownership === 1) {
+          circle.setAttribute("fill", players[1].color);
+        } else if (ownership === 2) {
+          circle.setAttribute("fill", players[2].color);
+        } else if (ownership === 3){
+          circle.setAttribute("fill", players[3].color);
+        }
+      } else {
+        circle.setAttribute("fill", "gray");
+      }
     }
     console.log(`Точката ${pointId} е скрита, защото няма пулове.`);
   }
@@ -1442,6 +1459,7 @@ function handleSkipCaptureOption(pointId) {
           (checkCountryOwnership(point) === 2 ? players[2].color : (checkCountryOwnership(point) === 3 ? players[3].color : players[4].color))) :
         "gray"
       );
+      console.log(`Point ${point.id} colored ${circle.getAttribute("fill")}`);
     }
   });
 
