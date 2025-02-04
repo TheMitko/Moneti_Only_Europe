@@ -803,7 +803,8 @@ function selectPoint(pointId) {
           return;
         }
         const point = pointsData.find(p => p.id === destinationPoint);
-        if (((pawnsOnPoints[destinationPoint].pawns !== 0) && beingAttacked[pawnsOnPoints[destinationPoint].owner] === true && pawnsOnPoints[destinationPoint].owner !== currentPlayer) || (point.capital===true && point.originalOwner!=currentPlayer && beingAttacked[point.originalOwner] === true)) {
+
+        if (((pawnsOnPoints[destinationPoint].pawns !== 0) && beingAttacked[pawnsOnPoints[destinationPoint].owner] === true && pawnsOnPoints[destinationPoint].owner !== currentPlayer) || (point.capital === true && point.OriginalOwner != currentPlayer && beingAttacked[point.OriginalOwner] === true)) {
           if (!confirmAttackOnAlreadyAttackedPlayer()) {
             selectedStartPoint = null;
             destinationPoint = null;
