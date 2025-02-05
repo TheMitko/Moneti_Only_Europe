@@ -1329,7 +1329,22 @@ function renderMapElements() {
     circle.setAttribute("cx", point.x);
     circle.setAttribute("cy", point.y);
     circle.setAttribute("r", point.capital ? 22 : 7); // Начален радиус
-    circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : (checkCountryOwnership(point) === 3 ? players[3].color : players[4].color))) : "gray");
+    if (point.country) {
+      let countryOwner = checkCountryOwnership(point);
+      if (countryOwner === 1) {
+      circle.setAttribute("fill", players[1].color);
+      } else if (countryOwner === 2) {
+      circle.setAttribute("fill", players[2].color); 
+      } else if (countryOwner === 3) {
+      circle.setAttribute("fill", players[3].color);
+      } else if (countryOwner === 4) {
+      circle.setAttribute("fill", players[4].color);
+      } else {
+        circle.setAttribute("fill", "gray");
+      }
+    } else {
+      circle.setAttribute("fill", "gray");
+    }
     circle.setAttribute("id", point.id);
     circle.style.cursor = "pointer"; // Настройка на курсора на pointer
     circle.addEventListener("click", () => selectPoint(point.id)); // Добавяне на клик събитие към точката
